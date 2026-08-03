@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "profiles": [
+    {
+      "id": "balanced",
+      "name": "Balanced",
+      "description": "Recommended daily profile for YouTube, Discord and common HTTPS traffic.",
+      "strategyFile": "general.bat",
+      "risk": "low",
+      "autoCandidate": true,
+      "accent": "recommended"
+    },
+    {
+      "id": "compatibility",
+      "name": "Compatibility",
+      "description": "Conservative alternative for providers where the balanced profile is unstable.",
+      "strategyFile": "general (ALT).bat",
+      "risk": "low",
+      "autoCandidate": true,
+      "accent": "safe"
+    },
+    {
+      "id": "aggressive",
+      "name": "Aggressive",
+      "description": "A stronger community strategy for difficult DPI configurations. May affect more traffic.",
+      "strategyFile": "general (ALT12).bat",
+      "risk": "medium",
+      "autoCandidate": true,
+      "accent": "strong"
+    },
+    {
+      "id": "simple",
+      "name": "Simple Fake",
+      "description": "Minimal fake-packet strategy with fewer moving parts and broad compatibility.",
+      "strategyFile": "general (SIMPLE FAKE).bat",
+      "risk": "low",
+      "autoCandidate": true,
+      "accent": "safe"
+    },
+    {
+      "id": "experimental",
+      "name": "Experimental",
+      "description": "Newest community strategy. Use only when stable profiles do not work.",
+      "strategyFile": "general (EXP).bat",
+      "risk": "high",
+      "autoCandidate": false,
+      "accent": "experimental"
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "sources": [
+    {
+      "id": "flowseal",
+      "name": "Flowseal Windows bundle",
+      "repository": "Flowseal/zapret-discord-youtube",
+      "releaseApi": "https://api.github.com/repos/Flowseal/zapret-discord-youtube/releases/latest",
+      "assetPattern": "(?i)^zapret-discord-youtube.*\\.zip$",
+      "fallbackAssetPattern": "(?i)\\.zip$",
+      "requiredFiles": [
+        "service.bat",
+        "bin\\winws.exe"
+      ],
+      "automatic": true,
+      "license": "MIT",
+      "allowedDownloadPrefix": "https://github.com/Flowseal/zapret-discord-youtube/releases/download/",
+      "maxAssetBytes": 314572800
+    },
+    {
+      "id": "zapret1",
+      "name": "Original zapret / Windows bundle",
+      "repository": "bol-van/zapret",
+      "automatic": false,
+      "license": "MIT",
+      "requiredExecutables": [
+        "winws.exe"
+      ]
+    },
+    {
+      "id": "zapret2",
+      "name": "zapret 2 experimental adapter",
+      "repository": "bol-van/zapret2",
+      "automatic": false,
+      "license": "MIT",
+      "requiredExecutables": [
+        "winws2.exe",
+        "nfqws2.exe"
+      ]
+    }
+  ]
+}

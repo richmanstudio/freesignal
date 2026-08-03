@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="980" viewBox="0 0 1600 980" role="img" aria-labelledby="title desc">
+  <title id="title">FreeSignal dashboard preview</title>
+  <desc id="desc">Dark desktop interface with connection status, profiles and service checks</desc>
+  <rect width="1600" height="980" rx="24" fill="#080808"/>
+  <rect x="1" y="1" width="1598" height="978" rx="23" fill="none" stroke="#303030" stroke-width="2"/>
+  <rect x="0" y="0" width="1600" height="62" rx="24" fill="#0d0d0d"/>
+  <path d="M0 62H1600" stroke="#292929"/>
+  <rect x="22" y="18" width="28" height="28" rx="6" fill="#B6FF00"/>
+  <text x="31" y="39" fill="#080808" font-family="Arial" font-size="17" font-weight="700">F</text>
+  <text x="64" y="39" fill="#f2f2f2" font-family="Arial" font-size="16" font-weight="700" letter-spacing="2">FREESIGNAL</text>
+  <rect x="202" y="19" width="72" height="25" rx="5" fill="#1d1d1d"/>
+  <text x="216" y="36" fill="#8d8d8d" font-family="Arial" font-size="11">MVP 0.1</text>
+
+  <rect x="0" y="62" width="285" height="918" fill="#0c0c0c"/>
+  <path d="M285 62V980" stroke="#252525"/>
+  <text x="28" y="107" fill="#636363" font-family="Arial" font-size="12" font-weight="700">CONTROL</text>
+  <rect x="18" y="125" width="249" height="48" rx="8" fill="#1d260e"/>
+  <text x="34" y="155" fill="#B6FF00" font-family="Arial" font-size="15">01   Overview</text>
+  <text x="34" y="207" fill="#dadada" font-family="Arial" font-size="15">02   Profiles</text>
+  <text x="34" y="257" fill="#dadada" font-family="Arial" font-size="15">03   Diagnostics</text>
+  <text x="34" y="307" fill="#dadada" font-family="Arial" font-size="15">04   Domains</text>
+  <text x="34" y="357" fill="#dadada" font-family="Arial" font-size="15">05   Logs</text>
+  <text x="34" y="407" fill="#dadada" font-family="Arial" font-size="15">06   Settings</text>
+  <rect x="18" y="855" width="249" height="93" rx="12" fill="#111111" stroke="#292929"/>
+  <circle cx="38" cy="884" r="6" fill="#B6FF00"/>
+  <text x="54" y="889" fill="#f2f2f2" font-family="Arial" font-size="12" font-weight="700">ENGINE ACTIVE</text>
+  <text x="34" y="920" fill="#777" font-family="Arial" font-size="12">flowseal · 1.10.0</text>
+
+  <text x="335" y="116" fill="#B6FF00" font-family="Arial" font-size="13" font-weight="700">OVERVIEW / 01</text>
+  <text x="335" y="165" fill="#f2f2f2" font-family="Arial" font-size="42" font-weight="700">Connection control</text>
+  <text x="335" y="199" fill="#8d8d8d" font-family="Arial" font-size="17">Local anti-DPI orchestration without VPN accounts or third-party traffic relays.</text>
+  <rect x="1315" y="103" width="220" height="48" rx="8" fill="#171717" stroke="#393939"/>
+  <text x="1352" y="133" fill="#ff7474" font-family="Arial" font-size="13" font-weight="700">EMERGENCY STOP</text>
+
+  <rect x="335" y="240" width="1200" height="340" rx="18" fill="#101010" stroke="#2a2a2a"/>
+  <text x="370" y="285" fill="#737373" font-family="Arial" font-size="12" font-weight="700">CURRENT STATE</text>
+  <circle cx="382" cy="335" r="10" fill="#B6FF00"/>
+  <text x="410" y="345" fill="#f2f2f2" font-family="Arial" font-size="34" font-weight="700">CONNECTION ACTIVE</text>
+  <text x="370" y="393" fill="#969696" font-family="Arial" font-size="16">Balanced strategy is running. The watchdog is monitoring general connectivity.</text>
+  <rect x="370" y="447" width="245" height="54" rx="9" fill="#B6FF00"/>
+  <text x="407" y="480" fill="#080808" font-family="Arial" font-size="14" font-weight="700">DISABLE CONNECTION</text>
+  <rect x="630" y="447" width="205" height="54" rx="9" fill="#191919" stroke="#393939"/>
+  <text x="668" y="480" fill="#f2f2f2" font-family="Arial" font-size="14" font-weight="700">AUTO OPTIMIZE</text>
+
+  <rect x="1110" y="275" width="375" height="255" rx="14" fill="#0b0b0b" stroke="#272727"/>
+  <text x="1140" y="315" fill="#737373" font-family="Arial" font-size="11">ACTIVE PROFILE</text>
+  <text x="1140" y="352" fill="#f2f2f2" font-family="Arial" font-size="25" font-weight="700">Balanced</text>
+  <text x="1140" y="400" fill="#737373" font-family="Arial" font-size="11">ENGINE</text>
+  <text x="1140" y="428" fill="#f2f2f2" font-family="Arial" font-size="14">flowseal 1.10.0</text>
+  <text x="1320" y="400" fill="#737373" font-family="Arial" font-size="11">WATCHDOG</text>
+  <text x="1320" y="428" fill="#B6FF00" font-family="Arial" font-size="14">Monitoring</text>
+  <rect x="1140" y="460" width="315" height="45" rx="8" fill="#141414"/>
+  <text x="1155" y="488" fill="#8b8b8b" font-family="Arial" font-size="12">Direct traffic · local storage · no telemetry</text>
+
+  <text x="337" y="635" fill="#777" font-family="Arial" font-size="12" font-weight="700">SERVICE HEALTH</text>
+  <g transform="translate(335 660)">
+    <rect width="380" height="200" rx="14" fill="#101010" stroke="#282828"/>
+    <text x="25" y="42" fill="#777" font-family="Arial" font-size="12">YOUTUBE</text>
+    <text x="25" y="91" fill="#B6FF00" font-family="Arial" font-size="27" font-weight="700">Available</text>
+    <text x="25" y="126" fill="#777" font-family="Arial" font-size="13">HTTP 204 · 86 ms</text>
+    <path d="M25 160H350" stroke="#202020"/>
+    <text x="25" y="184" fill="#666" font-family="Arial" font-size="11">LAST CHECK · NOW</text>
+  </g>
+  <g transform="translate(745 660)">
+    <rect width="380" height="200" rx="14" fill="#101010" stroke="#282828"/>
+    <text x="25" y="42" fill="#777" font-family="Arial" font-size="12">DISCORD</text>
+    <text x="25" y="91" fill="#B6FF00" font-family="Arial" font-size="27" font-weight="700">Available</text>
+    <text x="25" y="126" fill="#777" font-family="Arial" font-size="13">HTTP 200 · 104 ms</text>
+    <path d="M25 160H350" stroke="#202020"/>
+    <text x="25" y="184" fill="#666" font-family="Arial" font-size="11">LAST CHECK · NOW</text>
+  </g>
+  <g transform="translate(1155 660)">
+    <rect width="380" height="200" rx="14" fill="#101010" stroke="#282828"/>
+    <text x="25" y="42" fill="#777" font-family="Arial" font-size="12">GENERAL INTERNET</text>
+    <text x="25" y="91" fill="#B6FF00" font-family="Arial" font-size="27" font-weight="700">Stable</text>
+    <text x="25" y="126" fill="#777" font-family="Arial" font-size="13">Watchdog active</text>
+    <path d="M25 160H350" stroke="#202020"/>
+    <text x="25" y="184" fill="#666" font-family="Arial" font-size="11">AUTO ROLLBACK · ARMED</text>
+  </g>
+</svg>

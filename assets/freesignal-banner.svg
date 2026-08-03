@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="520" viewBox="0 0 1600 520" role="img" aria-labelledby="title desc">
+  <title id="title">FreeSignal</title>
+  <desc id="desc">Local anti-DPI connection manager built by DUONIQ</desc>
+  <rect width="1600" height="520" fill="#080808"/>
+  <g stroke="#1d1d1d" stroke-width="1">
+    <path d="M0 104H1600M0 208H1600M0 312H1600M0 416H1600"/>
+    <path d="M160 0V520M320 0V520M480 0V520M640 0V520M800 0V520M960 0V520M1120 0V520M1280 0V520M1440 0V520"/>
+  </g>
+  <rect x="74" y="68" width="62" height="62" rx="13" fill="#B6FF00"/>
+  <path d="M96 87h25v8h-16v8h14v8h-14v17h-9z" fill="#080808"/>
+  <text x="154" y="111" fill="#f5f5f5" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700" letter-spacing="4">FREESIGNAL</text>
+  <text x="74" y="255" fill="#f5f5f5" font-family="Arial, Helvetica, sans-serif" font-size="104" font-weight="700" letter-spacing="-4">DIRECT ACCESS.</text>
+  <text x="74" y="356" fill="#B6FF00" font-family="Arial, Helvetica, sans-serif" font-size="104" font-weight="700" letter-spacing="-4">ZERO RELAY.</text>
+  <text x="78" y="425" fill="#909090" font-family="Arial, Helvetica, sans-serif" font-size="24">LOCAL ANTI-DPI ORCHESTRATION FOR WINDOWS 10 / 11</text>
+  <g transform="translate(1210 78)">
+    <circle cx="145" cy="145" r="134" fill="none" stroke="#202020" stroke-width="2"/>
+    <circle cx="145" cy="145" r="91" fill="none" stroke="#2b2b2b" stroke-width="2"/>
+    <circle cx="145" cy="145" r="48" fill="#B6FF00"/>
+    <path d="M145 0V97M145 193V290M0 145H97M193 145H290" stroke="#B6FF00" stroke-width="3"/>
+    <circle cx="145" cy="145" r="9" fill="#080808"/>
+  </g>
+  <text x="1210" y="444" fill="#f5f5f5" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700">BUILT BY DUONIQ</text>
+  <text x="1210" y="472" fill="#717171" font-family="Arial, Helvetica, sans-serif" font-size="15">OPEN SOURCE / LOCAL FIRST / NO TELEMETRY</text>
+</svg>
