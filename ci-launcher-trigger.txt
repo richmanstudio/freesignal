@@ -1,0 +1,1 @@
+Validate FreeSignal 0.1.1 launcher on Windows PowerShell 5.1 through cscript.exe.
