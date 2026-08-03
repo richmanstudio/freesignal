@@ -10,7 +10,7 @@ node .\tests\test_profiles.mjs
 2. Build the portable release:
 
 ```powershell
-.\Build-Release.ps1 -Version 0.1.0
+.\Build-Release.ps1 -Version 0.1.1
 ```
 
 3. Verify the generated SHA-256 file.
