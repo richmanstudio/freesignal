@@ -79,119 +79,117 @@ FreeSignal downloads the engine package directly from the repository declared in
 | Simple Fake | Minimal strategy with fewer moving parts | Low |
 | Experimental | Newest imported community strategy | High |
 
-Profiles reference files in the installed package, such as `general.bat` or `general (ALT12).bat`. FreeSignal never modifies the source strategy. At runtime it validates the file, extracts only its continued `winws.exe` command block, substitutes local package paths and writes a temporary wrapper. Calls to `service.bat`, update checks and unrelated shell commands are excluded.
-
 ## Safety model
 
-FreeSignal is a privileged network utility, so the project uses explicit guardrails:
+FreeSignal is intentionally conservative:
+
+- it never disables antivirus or Windows security features;
+- it does not make automatic firewall exclusions;
+- it does not execute package service/update hooks;
+- it refuses to take ownership of unrelated `winws` processes;
+- it validates imported ZIP paths and size limits before extraction;
+- it keeps one previous engine package for rollback;
+- it exposes emergency stop and safe-mode launchers;
+- it stores state and logs locally in `%LOCALAPPDATA%\FreeSignal`;
+- it has no hidden telemetry.
+
+Read the full threat model in [`docs/THREAT_MODEL.md`](docs/THREAT_MODEL.md).
+
+## Engine package policy
+
+The FreeSignal repository does **not** bundle third-party engine binaries. The client can download a compatible package from the source declared in `app/engine-sources.json`, currently the official Flowseal release channel, or import a local ZIP selected by the user.
+
+FreeSignal records:
+
+- source/provider;
+- release version;
+- asset URL;
+- installation timestamp;
+- SHA-256 of the archive.
+
+Imported scripts are not executed directly. FreeSignal derives a minimal runtime wrapper from the selected strategy and accepts only the visible `winws.exe` launch block after rejecting forbidden hooks and command operators.
+
+## Architecture
 
 ```text
-profile start
-    ↓
-validate and sanitize winws command
-    ↓
-record owned process ID + start time
-    ↓
-start independent watchdog
-    ↓
-probe general connectivity
-    ↓ repeated failure
-stop only FreeSignal-owned process and show rollback warning
+FreeSignal.vbs / FreeSignal.cmd
+             │
+             ▼
+        FreeSignal.ps1
+             │
+   ┌─────────┼───────────┬──────────────┐
+   ▼         ▼           ▼              ▼
+WPF UI   Engine store  Diagnostics   Watchdog
+             │
+             ▼
+      Sanitized strategy
+             │
+             ▼
+      winws + WinDivert
 ```
 
-The client never:
+The GUI and orchestration logic are first-party FreeSignal code. Compatible anti-DPI engines, packet-diversion drivers and community strategies remain separate third-party works under their own licenses.
 
-- disables Microsoft Defender or another antivirus;
-- adds security exclusions;
-- installs a hidden remote-control service;
-- executes the imported package's service menu or update-check hooks;
-- modifies Windows proxy or firewall rules;
-- logs packet bodies or the URLs a user visits;
-- downloads executable scripts from an arbitrary URL.
+See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) and [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).
 
-See [Threat model](docs/THREAT_MODEL.md) and [Security policy](SECURITY.md).
-
-## Engine ecosystem
-
-FreeSignal is independent from the projects it can orchestrate:
-
-| Component | Role | License |
-| --- | --- | --- |
-| `bol-van/zapret` | Original anti-DPI engine | MIT |
-| `bol-van/zapret2` | Next-generation programmable engine | MIT |
-| `Flowseal/zapret-discord-youtube` | Windows strategies and distribution | MIT |
-| WinDivert | Windows packet diversion driver | LGPL v3 or GPL v2 / commercial option |
-
-The source repository does not bundle those binaries. Redistribution of a combined release must preserve all relevant third-party notices and license obligations. See [Third-party notices](THIRD_PARTY_NOTICES.md).
-
-## Repository structure
+## Repository layout
 
 ```text
-FreeSignal.ps1             application logic and WPF event wiring
-FreeSignal.vbs             console-free desktop launcher
-FreeSignal.cmd             terminal/troubleshooting launcher
-FreeSignal-SafeMode.cmd    explicit emergency stop for all winws processes
-app/MainWindow.xaml        English desktop interface
-app/MainWindow.ru.xaml     Russian desktop interface
-app/Watchdog.ps1           connectivity rollback process
-app/profiles.json          human-readable strategy mapping
-app/engine-sources.json    explicit engine adapter sources
-installer/                 install and uninstall scripts
-tests/                     syntax, metadata and safety checks
-docs/                      architecture, threat model and release process
+FreeSignal.ps1              Application, UI orchestration and engine manager
+FreeSignal.vbs              Console-free launcher
+FreeSignal.cmd              Terminal launcher
+FreeSignal-SafeMode.cmd     Independent recovery launcher
+app/MainWindow*.xaml        English and Russian WPF interfaces
+app/Watchdog.ps1            Independent connectivity watchdog
+app/profiles.json           Human-readable strategy profile registry
+app/engine-sources.json     Engine adapters and trust boundaries
+installer/                  Install and uninstall scripts
+tests/                      Static safety and metadata tests
+docs/                       Architecture, threat model and release process
 ```
 
-## Install to Program Files
+## Development
 
-From an elevated PowerShell terminal:
-
-```powershell
-powershell.exe -ExecutionPolicy Bypass -File .\installer\Install.ps1
-```
-
-Uninstall while preserving user data:
+Run the portable self-test on Windows:
 
 ```powershell
-powershell.exe -ExecutionPolicy Bypass -File "$env:ProgramFiles\FreeSignal\installer\Uninstall.ps1"
-```
-
-The portable release also works directly from an extracted folder.
-
-## Validation
-
-```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\tests\StaticTests.ps1
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\FreeSignal.ps1 -SelfTest
 node .\tests\test_profiles.mjs
 ```
 
-CI parses the PowerShell AST and both XAML interfaces on Windows, runs the sanitizer self-test, validates profile metadata on Node.js, and produces a portable release ZIP with an internal file manifest and external SHA-256 checksum. See the [Windows test matrix](docs/TEST_MATRIX.md).
+The CI workflow validates PowerShell syntax, both XAML files, profile invariants, engine-source boundaries, the strategy sanitizer and release packaging.
 
-## Current MVP boundaries
+Build a portable archive:
 
-- Windows x64 only.
-- Automatic package installation currently targets the Flowseal-compatible layout.
-- Original zapret and zapret 2 are declared as manual adapter targets until stable Windows package-layout contracts are finalized.
-- The automatic adapter currently disables Flowseal GameFilter expansion (`GameFilter*=12`) to avoid unexpectedly intercepting broad game-port ranges.
-- HTTP probes cannot fully validate Discord voice or every QUIC path; they provide a practical first-pass health signal.
-- The source has not yet been code-signed. Windows may display a publisher warning for release scripts.
+```powershell
+.\Build-Release.ps1 -Version 0.1.1
+```
 
-These limitations are explicit. FreeSignal does not claim that one strategy works for every provider.
+## Privacy
 
-## Roadmap
-
-- Signed DUONIQ engine manifest with pinned third-party hashes.
-- Native service broker with a restricted IPC protocol.
-- Windows installer signing and reproducible builds.
-- Dedicated Discord voice/STUN and QUIC diagnostics.
-- Community strategy registry with review, provenance and compatibility scoring.
-- zapret 2 Lua profile adapter.
-- Windows ARM64.
-- English and Russian interface localization.
+FreeSignal does not collect or transmit analytics. Local logs contain operational events such as package installation, selected profiles, process start/stop and diagnostic results. Support exports intentionally exclude packet payloads, browsing history and the user's include/exclude domain lists.
 
 ## Attribution
 
-FreeSignal is built by **DUONIQ** and stands on years of work by the zapret, Flowseal and WinDivert maintainers. It is not affiliated with Discord, Google, YouTube, Telegram, Microsoft or an internet provider.
+FreeSignal is an independent community project and is not affiliated with the maintainers of zapret, Flowseal or WinDivert.
 
-```text
-DIRECT ACCESS / ZERO RELAY / LOCAL CONTROL
-```
+- Anti-DPI engine ecosystem: `bol-van/zapret` and compatible projects.
+- Current packaged strategy source adapter: `Flowseal/zapret-discord-youtube`.
+- Windows packet diversion used by compatible engine packages: WinDivert.
+
+See [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) before redistribution.
+
+## Legal notice
+
+Network regulation differs by jurisdiction. FreeSignal is provided for lawful interoperability, availability testing, research and user-controlled network diagnostics. Users are responsible for local law, service agreements and the traffic they access.
+
+## License
+
+FreeSignal first-party source code is available under the [MIT License](LICENSE). Third-party engine packages, drivers and strategies are governed by their respective licenses.
+
+---
+
+<p align="center">
+  <strong>FREESIGNAL / DUONIQ</strong><br>
+  <sub>Local control. Visible changes. No account.</sub>
+</p>
