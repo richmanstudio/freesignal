@@ -7,6 +7,7 @@
 - Rebuilt `FreeSignal.vbs` with explicit Windows PowerShell path, STA mode, safe quoting and error handling.
 - Added a real `cscript.exe FreeSignal.vbs --self-test` CI regression test.
 - Kept UTF-8 BOM compatibility for Cyrillic source under Windows PowerShell 5.1.
+- Excluded CI workflows, tests and temporary trigger files from portable release archives.
 
 ## 0.1.0 — MVP
 
