@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  metadata:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Validate profile and safety metadata
+        run: node tests/test_profiles.mjs
+
+  windows-client:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Parse PowerShell, XAML and run self-test
+        shell: powershell
+        run: .\tests\StaticTests.ps1
+      - name: Validate metadata
+        run: node tests/test_profiles.mjs
+      - name: Build portable release
+        shell: powershell
+        run: .\Build-Release.ps1 -Version 0.1.0
+      - uses: actions/upload-artifact@v4
+        with:
+          name: FreeSignal-0.1.0-windows-x64
+          path: |
+            dist/FreeSignal-0.1.0-windows-x64.zip
+            dist/FreeSignal-0.1.0-windows-x64.zip.sha256
