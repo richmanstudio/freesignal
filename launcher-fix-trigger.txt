@@ -1,0 +1,1 @@
+Trigger the verified FreeSignal 0.1.1 Windows launcher compatibility migration.
