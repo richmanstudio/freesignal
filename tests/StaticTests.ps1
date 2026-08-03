@@ -14,7 +14,7 @@ foreach ($error in $watchdogErrors) { $failures.Add("Watchdog.ps1:$($error.Exten
 
 foreach ($xamlName in @('MainWindow.xaml', 'MainWindow.ru.xaml')) {
     try { [xml](Get-Content -LiteralPath (Join-Path $root ('app\' + $xamlName)) -Raw -Encoding UTF8) | Out-Null }
-    catch { $failures.Add("$xamlName: $($_.Exception.Message)") }
+    catch { $failures.Add("${xamlName}: $($_.Exception.Message)") }
 }
 
 $selfTestOutput = & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $root 'FreeSignal.ps1') -SelfTest | Out-String
