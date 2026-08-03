@@ -1,0 +1,1 @@
+Apply UTF-8 BOM compatibility fix for Windows PowerShell 5.1.
