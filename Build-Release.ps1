@@ -12,8 +12,10 @@ $dist = Join-Path $root 'dist'
 $stage = Join-Path $dist "FreeSignal-$Version"
 Remove-Item -LiteralPath $dist -Recurse -Force -ErrorAction SilentlyContinue
 New-Item -ItemType Directory -Path $stage -Force | Out-Null
-$exclude = @('.git', 'dist', 'demo', 'tests')
-Get-ChildItem -LiteralPath $root | Where-Object { $exclude -notcontains $_.Name } | ForEach-Object {
+$exclude = @('.git', '.github', 'dist', 'demo', 'tests')
+Get-ChildItem -LiteralPath $root | Where-Object {
+    ($exclude -notcontains $_.Name) -and ($_.Name -notlike '*-trigger.txt')
+} | ForEach-Object {
     Copy-Item -LiteralPath $_.FullName -Destination $stage -Recurse -Force
 }
 Set-Content -LiteralPath (Join-Path $stage 'VERSION') -Value $Version -Encoding ASCII
