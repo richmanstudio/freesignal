@@ -9,7 +9,7 @@ param(
 Set-StrictMode -Version 2.0
 $ErrorActionPreference = 'Stop'
 
-$Script:Version = '0.1.0'
+$Script:Version = '0.1.1'
 $Script:Root = Split-Path -Parent $MyInvocation.MyCommand.Path
 $Script:AppDirectory = Join-Path $Script:Root 'app'
 $Script:ProfilesPath = Join-Path $Script:AppDirectory 'profiles.json'
@@ -570,7 +570,7 @@ function Remove-FSEnginePackage {
 
 function Get-FSPendingListPath {
     param([Parameter(Mandatory = $true)][ValidateSet('include', 'exclude')][string]$Kind)
-    return Join-Path $Script:DataDirectory (if ($Kind -eq 'include') { 'list-general-user.txt' } else { 'list-exclude-user.txt' })
+    return Join-Path $Script:DataDirectory $(if ($Kind -eq 'include') { 'list-general-user.txt' } else { 'list-exclude-user.txt' })
 }
 
 function Normalize-FSDomainList {
@@ -662,10 +662,10 @@ function New-FSDiagnosticResult {
 
 function Invoke-FSDiagnostics {
     $results = New-Object System.Collections.Generic.List[object]
-    $results.Add((New-FSDiagnosticResult -Name 'Administrator access' -Ok (Test-FSAdministrator) -Detail (if (Test-FSAdministrator) { 'Running with elevated privileges.' } else { 'Administrator privileges are required to load WinDivert.' })))
+    $results.Add((New-FSDiagnosticResult -Name 'Administrator access' -Ok (Test-FSAdministrator) -Detail $(if (Test-FSAdministrator) { 'Running with elevated privileges.' } else { 'Administrator privileges are required to load WinDivert.' })))
     $results.Add((New-FSDiagnosticResult -Name 'Windows version' -Ok $true -Detail ([Environment]::OSVersion.VersionString)))
     $installed = Test-FSEngineInstalled
-    $results.Add((New-FSDiagnosticResult -Name 'Engine package' -Ok $installed -Detail (if ($installed) { "Installed: $($Script:State.engine.provider) $($Script:State.engine.version)" } else { 'Not installed.' })))
+    $results.Add((New-FSDiagnosticResult -Name 'Engine package' -Ok $installed -Detail $(if ($installed) { "Installed: $($Script:State.engine.provider) $($Script:State.engine.version)" } else { 'Not installed.' })))
 
     if ($installed) {
         $driverPath = Join-Path $Script:EngineDirectory 'bin\WinDivert64.sys'
@@ -673,7 +673,7 @@ function Invoke-FSDiagnostics {
             try {
                 $signature = Get-AuthenticodeSignature -LiteralPath $driverPath
                 $signatureOk = ($signature.Status -eq 'Valid')
-                $results.Add((New-FSDiagnosticResult -Name 'WinDivert driver signature' -Ok $signatureOk -Detail ("Status: {0}" -f $signature.Status) -Level (if ($signatureOk) { 'info' } else { 'warning' })))
+                $results.Add((New-FSDiagnosticResult -Name 'WinDivert driver signature' -Ok $signatureOk -Detail ("Status: {0}" -f $signature.Status) -Level $(if ($signatureOk) { 'info' } else { 'warning' })))
             }
             catch { $results.Add((New-FSDiagnosticResult -Name 'WinDivert driver signature' -Ok $false -Detail $_.Exception.Message -Level 'warning')) }
         }
@@ -689,20 +689,20 @@ function Invoke-FSDiagnostics {
     }
 
     $externalEngines = @(Get-FSForeignEngineProcess)
-    $results.Add((New-FSDiagnosticResult -Name 'External zapret processes' -Ok ($externalEngines.Count -eq 0) -Detail (if ($externalEngines.Count) { 'Running process IDs: ' + (($externalEngines | ForEach-Object { $_.Id }) -join ', ') } else { 'No unmanaged winws/winws2 process detected.' }) -Level (if ($externalEngines.Count) { 'warning' } else { 'info' })))
+    $results.Add((New-FSDiagnosticResult -Name 'External zapret processes' -Ok ($externalEngines.Count -eq 0) -Detail $(if ($externalEngines.Count) { 'Running process IDs: ' + (($externalEngines | ForEach-Object { $_.Id }) -join ', ') } else { 'No unmanaged winws/winws2 process detected.' }) -Level $(if ($externalEngines.Count) { 'warning' } else { 'info' })))
     $zapretService = Get-Service -Name 'zapret' -ErrorAction SilentlyContinue
     $serviceClear = ($null -eq $zapretService -or $zapretService.Status -eq 'Stopped')
-    $results.Add((New-FSDiagnosticResult -Name 'zapret Windows service' -Ok $serviceClear -Detail (if ($null -eq $zapretService) { 'No service installed.' } else { 'Status: ' + $zapretService.Status }) -Level (if ($serviceClear) { 'info' } else { 'warning' })))
+    $results.Add((New-FSDiagnosticResult -Name 'zapret Windows service' -Ok $serviceClear -Detail $(if ($null -eq $zapretService) { 'No service installed.' } else { 'Status: ' + $zapretService.Status }) -Level $(if ($serviceClear) { 'info' } else { 'warning' })))
 
     $conflicts = @('goodbyedpi', 'clash', 'sing-box', 'xray', 'warp-svc')
     $activeConflicts = @()
     foreach ($name in $conflicts) {
         if (Get-Process -Name $name -ErrorAction SilentlyContinue) { $activeConflicts += $name }
     }
-    $results.Add((New-FSDiagnosticResult -Name 'Potential network conflicts' -Ok ($activeConflicts.Count -eq 0) -Detail (if ($activeConflicts.Count) { 'Running: ' + ($activeConflicts -join ', ') } else { 'No common conflicting processes detected.' }) -Level (if ($activeConflicts.Count) { 'warning' } else { 'info' })))
+    $results.Add((New-FSDiagnosticResult -Name 'Potential network conflicts' -Ok ($activeConflicts.Count -eq 0) -Detail $(if ($activeConflicts.Count) { 'Running: ' + ($activeConflicts -join ', ') } else { 'No common conflicting processes detected.' }) -Level $(if ($activeConflicts.Count) { 'warning' } else { 'info' })))
 
     foreach ($probe in (Invoke-FSServiceProbes)) {
-        $results.Add((New-FSDiagnosticResult -Name ("Endpoint: $($probe.name)") -Ok $probe.ok -Detail ("$($probe.detail), $($probe.latencyMs) ms") -Level (if ($probe.ok) { 'info' } else { 'warning' })))
+        $results.Add((New-FSDiagnosticResult -Name ("Endpoint: $($probe.name)") -Ok $probe.ok -Detail ("$($probe.detail), $($probe.latencyMs) ms") -Level $(if ($probe.ok) { 'info' } else { 'warning' })))
     }
 
     $Script:State.lastDiagnostics = @($results)
@@ -785,7 +785,7 @@ function Set-FSAutoStart {
     }
     $Script:State.autoStart = $Enabled
     Save-FSState -State $Script:State
-    Write-FSLog (if ($Enabled) { 'Auto-start task enabled.' } else { 'Auto-start task disabled.' })
+    Write-FSLog $(if ($Enabled) { 'Auto-start task enabled.' } else { 'Auto-start task disabled.' })
 }
 
 function Export-FSSupportReport {
@@ -947,7 +947,7 @@ function Set-FSProbeUi {
     $item = $entry[0]
     $Script:Ui[$StatusName].Text = if ($item.ok) { Get-FSText -English 'Available' -Russian 'Доступен' } else { Get-FSText -English 'Unavailable' -Russian 'Недоступен' }
     $Script:Ui[$DetailName].Text = $item.detail
-    $Script:Ui[$StatusName].Foreground = New-Object Windows.Media.SolidColorBrush ([Windows.Media.ColorConverter]::ConvertFromString((if ($item.ok) { '#B6FF00' } else { '#FF7A7A' })))
+    $Script:Ui[$StatusName].Foreground = New-Object Windows.Media.SolidColorBrush ([Windows.Media.ColorConverter]::ConvertFromString($(if ($item.ok) { '#B6FF00' } else { '#FF7A7A' })))
 }
 
 function Refresh-FSUi {
